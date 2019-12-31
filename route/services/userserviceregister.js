@@ -308,6 +308,7 @@ module.exports.forgotpassword=((req,res)=>{
     var updatepassword=req.body.updatepassword
     var id=req.body.id;
     console.log(fmail+"fmail")
+    console.log(mailstring,string,updatepassword)
 
     var  smtptransport=nodemailer.createTransport({
         service:'gmail',
@@ -336,9 +337,12 @@ module.exports.forgotpassword=((req,res)=>{
         }
     })
 
-    // userRepo.forgotpassword({mailstring:mailstring},{string:string},{updatepassword:updatepassword},{id:id},(req,res)=>{
-
-    // })
+     userRepo.forgotpassword({mailstring:mailstring},{string:string},{updatepassword:updatepassword},{id:id},(req,res)=>{
+        res.json({
+            "msg":"likes updated",
+            "data":data
+        })
+     })
 
 
 

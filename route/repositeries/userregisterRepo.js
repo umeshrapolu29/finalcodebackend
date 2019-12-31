@@ -235,7 +235,11 @@ module.exports.forgotpassword=((mailstring,string,updatepassword,id,callback)=>{
     console.log(mailstring,string,updatepassword,id+"at repo")
 
     if(mailstring==string){
-        Schema.updateOne({"_id":id.id})
+        Schema.updateOne({"_id":id.id},{$set:{password:updatepassword.updatepassword}}).then(result=>{
+            callback(null,result);
+        }).catch(error=>{
+            callback(null,error)
+        })
  
     }
 
