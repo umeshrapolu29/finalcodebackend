@@ -69,5 +69,16 @@ route.post('/getrequestaccepted',upload.single(''),(req,res)=>{
  route.post('/forgotpassword',upload.single(''),(req,res)=>{
      return userservice.forgotpassword(req,res);
  })
-
+ route.post('/resetpassword',upload.single(),(req,res)=>{
+     return userservice.resetpassword(req,res);
+ })
+ route.post('/commentonpost',upload.single(''),(req,res)=>{
+     return userservice.commentonpost(req,res);
+ })
+ route.post('/retrivecommentonpost',upload.single(''),(req,res)=>{
+     return userservice.retrivecommentonpost(req,res);
+ })
+ route.post('/sendmessage',upload.single(''),(req,res)=>{
+     return userservice.
+ })
 module.exports=route;

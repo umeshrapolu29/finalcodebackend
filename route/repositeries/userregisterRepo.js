@@ -7,8 +7,8 @@
 
 // Register Data....
  
- module.exports.insert=(username,password,firstname,lastname,email,file,callback)=>{
-    console.log(username.username,password.password,firstname.firstname,lastname.lastname,email.email,file.file)
+ module.exports.insert=(username,password,firstname,lastname,email,file,passwordtoken,callback)=>{
+    console.log(username.username,password.password,firstname.firstname,lastname.lastname,email.email,file.file,passwordtoken)
 
        Schema.find({"email":{$ne:null}}).then(result=>{
            //callback(null,result)
@@ -22,6 +22,7 @@
               lastname:lastname.lastname,
               email:email.email,
               file:file.file,
+              passwordtoken:passwordtoken.passwordtoken,
               regid:regid
               
         
@@ -231,19 +232,94 @@ module.exports.countlikes=((id,likes,callback)=>{
 
 // forget password
 
-module.exports.forgotpassword=((mailstring,string,updatepassword,id,callback)=>{
-    console.log(mailstring,string,updatepassword,id+"at repo")
+module.exports.resetpassword=((fmail,token1,updatepassword,callback)=>{
+    console.log(token1,updatepassword,fmail+"at repo")
+    Schema.find({email:fmail.fmail}).then(result=>{
+        
+        
 
-    if(mailstring==string){
-        Schema.updateOne({"_id":id.id},{$set:{password:updatepassword.updatepassword}}).then(result=>{
-            callback(null,result);
-        }).catch(error=>{
-            callback(null,error)
-        })
+        var token=result[0].passwordtoken
+
+        console.log(token);
+        console.log(token1);
+
+        if(token==token1)
+        {
+            Schema.updateOne({"email":fmail.fmail},{$set:{password:updatepassword.updatepassword}}).then(result=>{
+                callback(null,result);
+
+            }).catch(error=>{
+                callback(null,error);
+            })
+        }
+        else{
+            console.log("not matched")
+            callback(null,error);
+        }
+
+
+
+
+
+    }).catch(error=>{
+        callback(null,error)
+    })
+
+
+
+
+
+    
  
-    }
+    
 
   
 
+
+})
+// store token
+module.exports.storetoken=((fmail,string1,callback)=>{
+    console.log(fmail,string1+"at repo");
+
+    // Schema.updateOne({"_id":id.id},{$set:{passwordtoken:string.string}}).then(result=>{
+    //     callback(null,result);
+    // }).catch(error=>{
+    //     callback(null,error);
+    // })
+    Schema.updateOne({"email":fmail.fmail},{$set:{passwordtoken:string1.string1}}).then(result=>{
+        callback(null,result);
+
+        console.log(result.file);
+    }).catch(error=>{
+        callback(null,error);
+    })
+ })
+
+//  comment on post
+
+module.exports.commentonpost=((commentonpost,to_id,from_id,callback)=>{
+
+    var reg=new Schema({
+ 
+    commentonpost:commentonpost.commentonpost,
+        to_id:to_id.to_id,
+        from_id:from_id.from_id,
+
+
+    })
+    reg.save()
+     .then(result=>{
+         callback(null,result)
+     }).catch(error=>{
+         callback(null,error)
+     })
+
+})
+module.exports.retrivecommentonpost=((to_id,callback)=>{
+    Schema.find({to_id:to_id.to_id}).then(result=>{
+        callback(null,result)
+    }).catch(error=>{
+        callback(null,error)
+    })
 
 })

@@ -3,6 +3,10 @@ var express=require('express');
  var multer=require('multer');
  var nodemailer=require('nodemailer');
  var randomstring=require('randomstring');
+ 
+ var flash=require('connect-flash')
+ var app = express();
+ app.use(flash());
 
   
  var storage = multer.diskStorage({
@@ -19,6 +23,8 @@ var express=require('express');
     "error":1,
     "Status":""
 }
+ var string='';
+ var sendmail="";
 
  //var id=1;
    
@@ -35,12 +41,13 @@ module.exports.userdata=(upload.single('file'),(req,res)=>{
     var firstname=req.body.firstname;
     var lastname=req.body.lastname;
      var email=req.body.email;
+     var passwordtoken="null"
     
      var file='http://localhost:3001/images/'+ req.file.originalname;
      console.log(file)
-     console.log(username,password,firstname,lastname,email +"at service");
+     console.log(username,password,firstname,lastname,email,passwordtoken +"at service");
 
-     userRepo.insert({username:username},{password:password},{firstname:firstname},{lastname:lastname},{email:email},{file:file},(err,exist)=>{
+     userRepo.insert({username:username},{password:password},{firstname:firstname},{lastname:lastname},{email:email},{file:file},{passwordtoken:passwordtoken},(err,exist)=>{
 
         //console.log(exist)
         if(exist){
@@ -299,13 +306,18 @@ module.exports.countlikes=((req,res)=>{
 })
 
 // forgotpassword
-module.exports.forgotpassword=((req,res)=>{
+module.exports.forgotpassword=((req,res,next)=>{
   
-    var string=randomstring.generate(7);
+    string=randomstring.generate(7);
     console.log(string+"is")
+    var string1=string;
+  
     var fmail=req.body.fmail;
+    // module.exports.sendmail=fmail;
+    // console.log(sendmail+"sendmail");
+
     var mailstring=req.body.mailstring
-    var updatepassword=req.body.updatepassword
+    var updatepassword=req.body.updatepasswords
     var id=req.body.id;
     console.log(fmail+"fmail")
     console.log(mailstring,string,updatepassword)
@@ -330,20 +342,63 @@ module.exports.forgotpassword=((req,res)=>{
         }
         else{
             console.log("mail sent");
-            res.json({
-                "msg":"Token Sent to Email",
+            // res.json({
+            //     "msg":"Token Sent to Email",
                 
+            // })
+            console.log(string,id + "at service1")
+            userRepo.storetoken({fmail:fmail},{string1:string1},(req,data)=>{
+                res.json({
+                    "msg":"password updated",
+                    "data":data
+                })
             })
         }
     })
 
-     userRepo.forgotpassword({mailstring:mailstring},{string:string},{updatepassword:updatepassword},{id:id},(req,res)=>{
-        res.json({
-            "msg":"likes updated",
-            "data":data
-        })
-     })
-
-
+    
 
 })
+module.exports.resetpassword=((req,res)=>{
+    var token1=req.body.token1
+    var updatepassword=req.body.updatepassword
+     var fmail=req.body.fmail;
+    
+    
+  
+  
+    var string1=string;
+    console.log(fmail+"is")
+    console.log(token1,updatepassword ,fmail+ "at service")
+    userRepo.resetpassword({fmail:fmail},token1,{updatepassword:updatepassword},(req,result)=>{
+        res.json({
+            "msg":"password updated",
+            "data":result
+        })
+     })
+    })
+    module.exports.commentonpost=((req,res)=>{
+        var commentonpost=req.body.commentonpost
+        var to_id=req.body.to_id;
+        var from_id=req.body.from_id;
+        console.log(commentonpost,to_id,from_id +"at service")
+        userRepo.commentonpost({commentonpost:commentonpost},{to_id:to_id},{from_id:from_id},(req,data)=>{
+            res.json({
+                "msg":"commented",
+                "data":data
+            })
+        })
+    })
+    module.exports.retrivecommentonpost=((req,res)=>{
+        var to_id=req.body.to_id;
+        userRepo.retrivecommentonpost({to_id:to_id},(req,data)=>{
+            res.json({
+                "msg":"retrived data from post",
+                "data":data
+
+            })
+        })
+    })
+
+
+

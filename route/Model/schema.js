@@ -11,6 +11,7 @@ var Schema=Schema({
     password:{type:String},
     firstname:{type:String},
     lastname:{type:String},
+
     
     email:{type:String},
     file:{type:String},
@@ -25,6 +26,10 @@ var Schema=Schema({
     requestto:{type:String},
     requesttofile:{type:String},
     requeststatus:{type:String},
+    passwordtoken:{type:String},
+    commentonpost:{type:String},
+    to_id:{type:String},
+    from_id:{type:String},
        
 })
 module.exports=mongoose.model('Schema',Schema) 
