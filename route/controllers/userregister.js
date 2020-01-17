@@ -78,7 +78,7 @@ route.post('/getrequestaccepted',upload.single(''),(req,res)=>{
  route.post('/retrivecommentonpost',upload.single(''),(req,res)=>{
      return userservice.retrivecommentonpost(req,res);
  })
- route.post('/sendmessage',upload.single(''),(req,res)=>{
-     return userservice.
- })
+//  route.post('/sendmessage',upload.single(''),(req,res)=>{
+//      return userservice.
+//  })
 module.exports=route;
