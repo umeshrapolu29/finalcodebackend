@@ -59,9 +59,9 @@
 
  // Getting All Users
 
- module.exports.usernames=(req,callback)=>{
+ module.exports.usernames=(id,callback)=>{
 
-     Schema.find({"password":{$ne:null}})
+     Schema.find({_id:{$ne : id.id},"password":{$ne:null}})
      .then(result=>{
         callback(null,result)
         console.log(result);

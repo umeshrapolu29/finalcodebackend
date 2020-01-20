@@ -100,8 +100,10 @@ module.exports.logindata=((req,res)=>{
 
 // Getting All Users
 
-module.exports.usernames=( (req,res)=>{
-    userRepo.usernames({},(err,exists)=>{
+module.exports.usernames=((req,res)=>{
+    var id=req.body.id;
+    console.log(id+"at service");
+    userRepo.usernames({id:id},(err,exists)=>{
         console.log(res+"res is")
         if(exists){
             res.json({

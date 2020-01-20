@@ -30,6 +30,8 @@ var Schema=Schema({
     commentonpost:{type:String},
     to_id:{type:String},
     from_id:{type:String},
-       
+    to_msg:{type:String},
+    from_msg:{type:String},
+      
 })
 module.exports=mongoose.model('Schema',Schema) 
