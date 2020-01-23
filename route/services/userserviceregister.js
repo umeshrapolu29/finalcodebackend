@@ -3,9 +3,19 @@ var express=require('express');
  var multer=require('multer');
  var nodemailer=require('nodemailer');
  var randomstring=require('randomstring');
+ var mongoose=require('mongoose');
+ var app=express();
+//  var server = app.listen(3001)
+//  const client = require('socket.io')(server)
+// const client = require('socket.io')(server)
+ 
  
  var flash=require('connect-flash')
+ var db=require('../Database/db');
+ var url=db.url
  var app = express();
+//  var port=3001
+//  const client = require('socket.io')(port)
  app.use(flash());
 
   
@@ -335,7 +345,7 @@ module.exports.forgotpassword=((req,res,next)=>{
         to:fmail,
         from:'umeshrapolu29@gmail.com',
         subject:'reset password',
-        text:'change password\n\n'+string,
+        text:'change password\n\n'+string,  
     };
     smtptransport.sendMail(mailOption,function(err,data){
         if(err){
@@ -401,6 +411,87 @@ module.exports.resetpassword=((req,res)=>{
             })
         })
     })
+    module.exports.sendmessage=((req,res)=>{
+         var to_msgid=req.body.to_msgid;
+         var from_msgid=req.body.from_msgid;
+         var from_msg=req.body.from_msg;
+         userRepo.sendmessage({to_msgid:to_msgid},{from_msgid:from_msgid},{from_msg:from_msg},(req,data)=>{
+            res.json({
+                "msg":"message data from post",
+                "data":data
+
+            })
+
+         })
+
+
+    })
+//     module.exports.twowaycommunicatio=((req,res)=>{
+
+//         mongoose.connect(url, function(err, db){
+//     if(err){
+//         throw err;
+//     }
+
+//     console.log('MongoDB connected...');
+
+//     // Connect to Socket.io
+//     client.on('connection', function(socket){
+//         let chat = db.collection('chats');
+
+//         // Create function to send status
+//         sendStatus = function(s){
+//             socket.emit('status', s);
+//         }
+
+//         // Get chats from mongo collection
+//         chat.find().limit(100).sort({_id:1}).toArray(function(err, res){
+//             if(err){
+//                 throw err;
+//             }
+
+//             // Emit the messages
+//             socket.emit('output', res);
+//         });
+
+//         // Handle input events
+//         socket.on('input', function(data){
+//             let name = data.name;
+//             let message = data.message;
+
+//             // Check for name and message
+//             if(name == '' || message == ''){
+//                 // Send error status
+//                 sendStatus('Please enter a name and message');
+//             } else {
+//                 // Insert message
+//                 chat.insert({name: name, message: message}, function(){
+//                     client.emit('output', [data]);
+
+//                     // Send status object
+//                     sendStatus({
+//                         message: 'Message sent',
+//                         clear: true
+//                     });
+//                 });
+//             }
+//         });
+        
+ 
+
+//         // Handle clear
+//         socket.on('clear', function(data){
+//             // Remove all chats from collection
+//             chat.remove({}, function(){
+//                 // Emit cleared
+//                 socket.emit('cleared');
+//             });
+//         });
+//     });
+   
+// });
+
+//     })
 
 
 

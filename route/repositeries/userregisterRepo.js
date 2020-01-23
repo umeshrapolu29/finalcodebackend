@@ -323,3 +323,19 @@ module.exports.retrivecommentonpost=((to_id,callback)=>{
     })
 
 })
+module.exports.sendmessage=((to_msgid,from_msgid,from_msg,callback)=>{
+    var reg=new Schema({
+ 
+        to_msgid:to_msgid.to_msgid,
+        from_msgid:from_msgid.from_msgid,
+        from_msg:from_msg.from_msg,
+    
+    
+        })
+        reg.save()
+         .then(result=>{
+             callback(null,result)
+         }).catch(error=>{
+             callback(null,error)
+         })
+})

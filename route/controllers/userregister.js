@@ -79,6 +79,9 @@ route.post('/getrequestaccepted',upload.single(''),(req,res)=>{
      return userservice.retrivecommentonpost(req,res);
  })
  route.post('/sendmessage',upload.single(''),(req,res)=>{
-      return userservice.
+      return userservice.sendmessage(req,res);
+  })
+  route.post('/2waycommunication',upload.single(''),(req,res)=>{
+      return userservice.twowaycommunicatio(req,res);
   })
 module.exports=route;

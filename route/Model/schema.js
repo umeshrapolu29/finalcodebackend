@@ -11,6 +11,8 @@ var Schema=Schema({
     password:{type:String},
     firstname:{type:String},
     lastname:{type:String},
+    name:{type:String},
+    massege:{type:String},
 
     
     email:{type:String},
@@ -32,6 +34,8 @@ var Schema=Schema({
     from_id:{type:String},
     to_msg:{type:String},
     from_msg:{type:String},
+    to_msgid:{type:String},
+    from_msgid:{type:String},
       
 })
 module.exports=mongoose.model('Schema',Schema) 
